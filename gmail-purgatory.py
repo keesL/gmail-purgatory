@@ -7,7 +7,7 @@ from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
 # If modifying these scopes, delete the file token.json.
-SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
+SCOPES = ["https://www.googleapis.com/auth/gmail.modify"]
 PURGATORY_LABEL="00-Purgatory"
 
 def main():
@@ -88,9 +88,17 @@ def main():
                 print(f'From: {frm}: {subject} [PURGATORY]')
                 purgatory_staging.append(message['id'])
     
-    print(f"Applying {label_id} to: {purgatory_staging}")
-
     
+    if len(purgatory_staging) > 0:
+      print(f"Applying {label_id} to and removing  INBOX from: {purgatory_staging}")
+
+      operations = {
+        "removeLabelIds": ["INBOX"],
+        "ids": purgatory_staging,
+        "addLabelIds": [label_id]
+      }
+      results = service.users().messages().batchModify(userId="me", body=operations).execute()
+
   except HttpError as error:
     # TODO(developer) - Handle errors from gmail API.
     print(f"An error occurred: {error}")
