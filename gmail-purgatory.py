@@ -9,6 +9,7 @@ from googleapiclient.errors import HttpError
 # If modifying these scopes, delete the file token.json.
 SCOPES = ["https://www.googleapis.com/auth/gmail.modify"]
 PURGATORY_LABEL="00-Purgatory"
+ALLOWED_ADDRESSES = ["leune@adelphi.edu"]
 
 def main():
   """Based on Google Quickstart.py
@@ -82,10 +83,14 @@ def main():
             print(f'Unable to parge message.')
             purgatory_staging.append(message['id'])
         else:
-            if 'leune@adelphi.edu' in to:
-                print(f'From: {frm}: {subject} [accepted]')
-            else:
-                print(f'From: {frm}: {subject} [PURGATORY]')
+            accept=False
+            for allowed in ALLOWED_ADDRESSES:
+              if allowed in to:
+                print(f'[accepted]   From: {frm}: {subject}')
+                accept=True
+
+            if not accept:
+                print(f'[PURGATORY]  From: {frm}: {subject}')
                 purgatory_staging.append(message['id'])
     
     
