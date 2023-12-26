@@ -75,6 +75,7 @@ def main():
         hit = False
         to=subject=frm=None
         for h in headers:
+            # extract relevant headers
             if h['name'] == 'To': to = h['value']
             elif h['name'] == 'Subject': subject = h['value']
             elif h['name'] == 'From': frm=h['value']
@@ -85,7 +86,7 @@ def main():
         else:
             accept=False
             for allowed in ALLOWED_ADDRESSES:
-              if allowed in to:
+              if allowed in to and "adelphi.edu" in frm:
                 print(f'[accepted]   From: {frm}: {subject}')
                 accept=True
 
