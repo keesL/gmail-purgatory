@@ -76,9 +76,9 @@ def main():
         to=subject=frm=None
         for h in headers:
             # extract relevant headers
-            if h['name'] == 'To': to = h['value']
+            if h['name'] == 'To': to = h['value'].lower()
             elif h['name'] == 'Subject': subject = h['value']
-            elif h['name'] == 'From': frm=h['value']
+            elif h['name'] == 'From': frm=h['value'].lower()
             
         if not (to and frm and subject):
             print(f'Unable to parge message.')
