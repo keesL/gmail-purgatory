@@ -86,7 +86,8 @@ def main():
         else:
             accept=False
             for allowed in ALLOWED_ADDRESSES:
-              if allowed in to and "adelphi.edu" in frm:
+              # TODO: make this more configurable. Probably should go in a config file.
+              if allowed in to and ("adelphi.edu" in frm or "wiley.com" in frm):
                 print(f'[accepted]   From: {frm}: {subject}')
                 accept=True
 
